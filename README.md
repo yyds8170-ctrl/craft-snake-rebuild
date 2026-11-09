@@ -1,8 +1,9 @@
 # 贪吃蛇 · Snake（交互复刻）
 
+[![CI](https://github.com/yyds8170-ctrl/craft-snake-rebuild/actions/workflows/ci.yml/badge.svg)](https://github.com/yyds8170-ctrl/craft-snake-rebuild/actions/workflows/ci.yml)
 [![license](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
 [![type](https://img.shields.io/badge/type-interactive%20demo-green.svg)](#特性)
-[![test](https://img.shields.io/badge/e2e-6%2F6%20passing-brightgreen.svg)](#测试)
+[![test](https://img.shields.io/badge/unit%209--e2e%206%20passing-brightgreen.svg)](#测试)
 
 一个从零独立实现、可直接在浏览器运行的贪吃蛇，用于验证 **Craft Anything 取证 + 豆包手工编码**闭环对带交互逻辑目标的处理能力。
 
@@ -21,21 +22,25 @@
 
 ## 测试
 
-通过 Chrome DevTools Protocol（CDP）驱动真实页面做端到端验证，覆盖开始、暂停、恢复、撞墙结束、反向约束等流程：
+- **单元测试（9 项）**：直接对纯逻辑引擎 `js/engine.js` 验证移动、吃食物、撞墙、撞自身、方向约束、速度。
 
 ```bash
-# 先启动带远程调试的浏览器，再运行
-node e2e_test.mjs
-# 结果：6/6 通过
+node --test tests/engine.test.js
+```
+
+- **端到端测试（6 项）**：通过 CDP 驱动真实页面，覆盖开始、暂停、恢复、撞墙结束、反向约束。
+
+```bash
+node e2e_test.mjs   # 需先启动带远程调试的浏览器（见 CI 配置）
 ```
 
 ## 如何运行
 
-直接用浏览器打开 `index.html`，或：
+本项目使用 ES module，**请通过本地 HTTP 服务运行**（直接用 file:// 打开会因浏览器 CORS 策略阻止模块加载）：
 
 ```bash
 python3 -m http.server 8000
-# 访问 http://localhost:8000
+# 浏览器访问 http://localhost:8000
 ```
 
 ## 目录结构
@@ -44,11 +49,15 @@ python3 -m http.server 8000
 rebuild-snake/
 ├── index.html
 ├── css/style.css
-├── js/snake.js
-├── e2e_test.mjs     # CDP 端到端测试
-├── LICENSE          # PolyForm Noncommercial 1.0.0
+├── js/engine.js        # 纯逻辑引擎（可单元测试）
+├── js/snake.js         # UI/渲染/交互
+├── tests/              # 单元测试 + 结构校验
+├── e2e_test.mjs        # CDP 端到端测试
+├── .github/workflows/ci.yml
+├── CHANGELOG.md / CITATION.cff / VERSION
+├── LICENSE             # PolyForm Noncommercial 1.0.0
 ├── NOTICE
-└── evidence/        # 初始/进行中截图
+└── evidence/           # 初始/进行中截图
 ```
 
 ## 许可证

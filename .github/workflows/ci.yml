@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: 结构校验
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tests/validate.mjs
+
+  unit-test:
+    name: 引擎单元测试
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test tests/engine.test.js
+
+  e2e:
+    name: 端到端测试（HTTP + CDP）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 安装 Chrome
+        uses: browser-actions/setup-chrome@v1
+        id: setup-chrome
+      - name: 启动静态服务与调试浏览器
+        run: |
+          python3 -m http.server 8055 &
+          "${{ steps.setup-chrome.outputs.chrome-path }}" --headless --no-sandbox \
+            --disable-gpu --user-data-dir=/tmp/ci-profile \
+            --remote-debugging-port=9336 "http://127.0.0.1:8055/" &
+          sleep 6
+          curl -s http://127.0.0.1:9336/json/version
+      - name: 运行端到端测试
+        env:
+          CA_DEBUG_PORT: "9336"
+        run: node e2e_test.mjs

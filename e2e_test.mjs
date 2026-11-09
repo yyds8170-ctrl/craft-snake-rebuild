@@ -1,7 +1,8 @@
 // 通过 CDP 端到端验证贪吃蛇真实行为（node 22 内置 WebSocket/fetch）
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-const pages = await (await fetch("http://127.0.0.1:9333/json")).json();
+const debugPort = process.env.CA_DEBUG_PORT || "9336";
+const pages = await (await fetch(`http://127.0.0.1:${debugPort}/json`)).json();
 const page = pages.find((p) => p.type === "page");
 const ws = new WebSocket(page.webSocketDebuggerUrl);
 await new Promise((r) => (ws.onopen = r));
