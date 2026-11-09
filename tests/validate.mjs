@@ -12,8 +12,8 @@ const check = (name, fn) => {
   catch (e) { checks.push(["FAIL", name + " — " + e.message]); }
 };
 
-for (const f of ["index.html", "css/style.css", "js/engine.js", "js/snake.js",
-                  "LICENSE", "NOTICE", "README.md", "VERSION", "tests/engine.test.js"]) {
+for (const f of ["index.html", "css/style.css", "js/engine.js", "js/snake.js", "js/sound.js",
+                  "LICENSE", "NOTICE", "README.md", "VERSION", "tests/engine.test.js", "tests/sound.test.js"]) {
   check(`存在 ${f}`, () => assert.ok(existsSync(join(root, f))));
 }
 
@@ -23,10 +23,16 @@ check("html 带 lang", () => assert.ok(/<html[^>]*\slang=/.test(html)));
 check("含 canvas", () => assert.ok(/<canvas[\s>]/.test(html)));
 check("脚本以 module 加载", () => assert.ok(/<script[^>]*type="module"[^>]*src="js\/snake\.js"/.test(html)));
 check("含开始按钮", () => assert.ok(/id="start-btn"/.test(html)));
+check("含难度选择", () => assert.ok(/data-difficulty="normal"/.test(html)));
+check("含静音按钮", () => assert.ok(/id="mute-btn"/.test(html)));
 
 const engine = read("js/engine.js");
 check("engine 导出 step", () => assert.ok(/export function step/.test(engine)));
+check("engine 导出难度配置", () => assert.ok(/export const DIFFICULTIES/.test(engine)));
 check("engine 导出 createInitialState", () => assert.ok(/export function createInitialState/.test(engine)));
+
+const sound = read("js/sound.js");
+check("sound 导出音效引擎", () => assert.ok(/export function createSoundEngine/.test(sound)));
 
 const license = read("LICENSE");
 check("LICENSE 为 PolyForm Noncommercial 1.0.0", () => assert.ok(license.includes("PolyForm Noncommercial License 1.0.0")));

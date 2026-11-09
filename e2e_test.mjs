@@ -69,6 +69,25 @@ await sleep(300);
 s = JSON.parse(await state());
 results.push(["禁止180度反向且无异常", s.overlayHidden === true]);
 
+// 7. 难度切换：点击"困难"，应激活且 aria-pressed=true
+await ev(`document.querySelector('[data-difficulty="hard"]').click()`);
+await sleep(150);
+const hardActive = await ev(`(() => {
+  const b = document.querySelector('[data-difficulty="hard"]');
+  return b.classList.contains("active") && b.getAttribute("aria-pressed") === "true";
+})()`);
+results.push(["切换困难难度并更新状态", hardActive === true]);
+
+// 8. 静音开关：点击后文字变"音效：关"，再点恢复
+await ev(`document.getElementById("mute-btn").click()`);
+await sleep(150);
+const mutedText = await ev(`document.getElementById("mute-btn").textContent`);
+results.push(["点击静音显示关闭", mutedText === "音效：关"]);
+await ev(`document.getElementById("mute-btn").click()`);
+await sleep(150);
+const unmutedText = await ev(`document.getElementById("mute-btn").textContent`);
+results.push(["再次点击恢复音效", unmutedText === "音效：开"]);
+
 ws.close();
 let pass = 0;
 console.log("=== 贪吃蛇端到端测试 ===");

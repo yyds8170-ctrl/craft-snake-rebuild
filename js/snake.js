@@ -1,7 +1,8 @@
-// UI 层：负责 DOM、渲染、定时器与本地最高分；游戏逻辑见 engine.js
+// UI 层：负责 DOM、渲染、定时器与本地最高分；游戏逻辑见 engine.js，音效见 sound.js
 import {
-  createInitialState, setDirection, step, currentSpeed,
+  createInitialState, setDirection, step, currentSpeed, DIFFICULTIES,
 } from "./engine.js";
+import { createSoundEngine } from "./sound.js";
 
 const canvas = document.getElementById("board");
 const ctx = canvas.getContext("2d");
@@ -14,28 +15,44 @@ const overlay = document.getElementById("overlay");
 const overlayTitle = document.getElementById("overlay-title");
 const overlayText = document.getElementById("overlay-text");
 const startBtn = document.getElementById("start-btn");
+const muteBtn = document.getElementById("mute-btn");
 
-let state, timer, running, paused;
+let state, timer, running, paused, difficulty = "normal";
+let audioCtx, sound;
 let best = Number(localStorage.getItem("snake_best") || 0);
 bestEl.textContent = best;
 
+// 浏览器要求用户手势后才能创建/恢复 AudioContext
+function ensureSound() {
+  if (!sound) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    sound = createSoundEngine(audioCtx);
+  }
+}
+
 function reset() {
-  state = createInitialState(CELLS);
+  state = createInitialState(CELLS, difficulty);
   scoreEl.textContent = 0;
   draw();
 }
 
 function tick() {
   const event = step(state);
-  if (event === "over") return gameOver();
+  if (event === "over") {
+    if (sound) sound.play("over");
+    return gameOver();
+  }
 
   scoreEl.textContent = state.score;
-  if (state.score > best) {
-    best = state.score;
-    bestEl.textContent = best;
-    localStorage.setItem("snake_best", String(best));
+  if (event === "ate") {
+    if (sound) sound.play("eat");
+    if (state.score > best) {
+      best = state.score;
+      bestEl.textContent = best;
+      localStorage.setItem("snake_best", String(best));
+    }
+    restartTimer(); // 速度可能变化
   }
-  if (event === "ate") restartTimer(); // 速度可能变化
   draw();
 }
 
@@ -72,10 +89,11 @@ function getCss(name) {
 
 function restartTimer() {
   clearInterval(timer);
-  timer = setInterval(tick, currentSpeed(state.score));
+  timer = setInterval(tick, currentSpeed(state.score, state.speedConfig));
 }
 
 function start() {
+  ensureSound();
   reset();
   running = true;
   paused = false;
@@ -121,6 +139,28 @@ document.addEventListener("keydown", (e) => {
 
 document.querySelectorAll(".d").forEach((btn) => {
   btn.addEventListener("click", () => setDirection(state, btn.dataset.dir));
+});
+
+// 难度选择
+document.querySelectorAll(".difficulty button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    difficulty = btn.dataset.difficulty;
+    document.querySelectorAll(".difficulty button").forEach((b) => {
+      const on = b === btn;
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-pressed", String(on));
+    });
+    if (!running) reset();
+  });
+});
+
+// 静音开关
+muteBtn.addEventListener("click", () => {
+  ensureSound();
+  const muted = !sound.isMuted();
+  sound.setMuted(muted);
+  muteBtn.textContent = muted ? "音效：关" : "音效：开";
+  muteBtn.setAttribute("aria-pressed", String(muted));
 });
 
 startBtn.addEventListener("click", () => {

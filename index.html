@@ -16,6 +16,16 @@
       </div>
     </header>
 
+    <div class="controls">
+      <fieldset class="difficulty">
+        <legend>难度</legend>
+        <button type="button" data-difficulty="easy" aria-pressed="false">简单</button>
+        <button type="button" data-difficulty="normal" class="active" aria-pressed="true">普通</button>
+        <button type="button" data-difficulty="hard" aria-pressed="false">困难</button>
+      </fieldset>
+      <button id="mute-btn" type="button" aria-pressed="false">音效：开</button>
+    </div>
+
     <div class="board-wrap">
       <canvas id="board" width="400" height="400" aria-label="贪吃蛇游戏区域"></canvas>
       <div id="overlay" class="overlay">

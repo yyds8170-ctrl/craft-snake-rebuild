@@ -3,6 +3,15 @@
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 规范，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)，许可证为 PolyForm Noncommercial 1.0.0。
 
+## [1.2.0] - 2026-11-09
+
+### 新增
+- 难度选择（简单 / 普通 / 困难）：不同初始速度、下限与加速曲线，引擎层归一化非法难度。
+- 程序化音效（`js/sound.js`，Web Audio 合成）：吃食物与游戏结束音效，零外部资源，可一键静音。
+- 音效单元测试（`tests/sound.test.js`，5 项，mock AudioContext）与 4 项难度单元测试。
+- 端到端测试扩展至 9 项（新增难度切换、静音开关）。
+- 结构校验扩展至 25 项。
+
 ## [1.1.0] - 2026-11-09
 
 ### 变更

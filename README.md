@@ -3,7 +3,7 @@
 [![CI](https://github.com/yyds8170-ctrl/craft-snake-rebuild/actions/workflows/ci.yml/badge.svg)](https://github.com/yyds8170-ctrl/craft-snake-rebuild/actions/workflows/ci.yml)
 [![license](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
 [![type](https://img.shields.io/badge/type-interactive%20demo-green.svg)](#特性)
-[![test](https://img.shields.io/badge/unit%209--e2e%206%20passing-brightgreen.svg)](#测试)
+[![test](https://img.shields.io/badge/unit%2017--e2e%209%20passing-brightgreen.svg)](#测试)
 
 一个从零独立实现、可直接在浏览器运行的贪吃蛇，用于验证 **Craft Anything 取证 + 豆包手工编码**闭环对带交互逻辑目标的处理能力。
 
@@ -13,22 +13,24 @@
 
 ## 特性
 
+- 三档难度（简单 / 普通 / 困难），不同速度曲线
 - 方向键 / WASD 控制，禁止 180° 直接反向
 - 空格暂停 / 继续，开始与结束遮罩
 - 吃食物计分、随分数提升速度
+- 程序化音效（Web Audio，零外部资源），可静音
 - 最高分通过 `localStorage` 持久化
 - 撞墙 / 撞自身判定，游戏结束可重开
 - 移动端虚拟方向键，响应式布局
 
 ## 测试
 
-- **单元测试（9 项）**：直接对纯逻辑引擎 `js/engine.js` 验证移动、吃食物、撞墙、撞自身、方向约束、速度。
+- **单元测试（17 项）**：对纯逻辑引擎 `js/engine.js` 验证移动、吃食物、碰撞、方向、速度、难度，对 `js/sound.js` 用 mock AudioContext 验证音效。
 
 ```bash
-node --test tests/engine.test.js
+node --test tests/engine.test.js tests/sound.test.js
 ```
 
-- **端到端测试（6 项）**：通过 CDP 驱动真实页面，覆盖开始、暂停、恢复、撞墙结束、反向约束。
+- **端到端测试（9 项）**：通过 CDP 驱动真实页面，覆盖开始、暂停、恢复、撞墙结束、反向约束、难度切换、静音开关。
 
 ```bash
 node e2e_test.mjs   # 需先启动带远程调试的浏览器（见 CI 配置）
@@ -50,6 +52,7 @@ rebuild-snake/
 ├── index.html
 ├── css/style.css
 ├── js/engine.js        # 纯逻辑引擎（可单元测试）
+├── js/sound.js         # 程序化音效（Web Audio）
 ├── js/snake.js         # UI/渲染/交互
 ├── tests/              # 单元测试 + 结构校验
 ├── e2e_test.mjs        # CDP 端到端测试

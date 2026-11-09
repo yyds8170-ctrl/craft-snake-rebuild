@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert";
 import {
   DIRS, createInitialState, placeFood, setDirection, step,
-  hitsWall, hitsSelf, currentSpeed,
+  hitsWall, hitsSelf, currentSpeed, DIFFICULTIES,
 } from "../js/engine.js";
 
 test("初始状态：3节蛇、向右、分数0、有食物、status ready", () => {
@@ -82,4 +82,24 @@ test("currentSpeed 随分数提升，且不低于下限", () => {
   assert.equal(currentSpeed(0), 140);
   assert.equal(currentSpeed(5), 128);
   assert.equal(currentSpeed(100), 60); // 触底
+});
+
+test("难度配置：createInitialState 携带对应速度参数", () => {
+  const easy = createInitialState(20, "easy");
+  const hard = createInitialState(20, "hard");
+  assert.equal(easy.speedConfig, DIFFICULTIES.easy);
+  assert.equal(hard.difficulty, "hard");
+  assert.ok(DIFFICULTIES.hard.base < DIFFICULTIES.easy.base);
+});
+
+test("不同难度初始速度不同", () => {
+  const easy = createInitialState(20, "easy");
+  const hard = createInitialState(20, "hard");
+  assert.ok(currentSpeed(0, easy.speedConfig) > currentSpeed(0, hard.speedConfig));
+});
+
+test("非法难度回退到 normal", () => {
+  const s = createInitialState(20, "nope");
+  assert.equal(s.difficulty, "normal");
+  assert.equal(s.speedConfig, DIFFICULTIES.normal);
 });

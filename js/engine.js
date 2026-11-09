@@ -8,9 +8,20 @@ export const DIRS = {
 
 export const SPEED_CONFIG = { base: 140, min: 60, stepEvery: 5, stepMs: 12 };
 
-export function createInitialState(cells = 20) {
+// 难度配置：不同初始速度、下限与加速曲线
+export const DIFFICULTIES = {
+  easy: { label: "简单", base: 170, min: 90, stepEvery: 6, stepMs: 10 },
+  normal: { label: "普通", base: 140, min: 60, stepEvery: 5, stepMs: 12 },
+  hard: { label: "困难", base: 110, min: 45, stepEvery: 4, stepMs: 14 },
+};
+
+export function createInitialState(cells = 20, difficulty = "normal") {
+  const validDifficulty = DIFFICULTIES[difficulty] ? difficulty : "normal";
+  const cfg = DIFFICULTIES[validDifficulty];
   const state = {
     cells,
+    difficulty: validDifficulty,
+    speedConfig: cfg,
     snake: [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }],
     dir: DIRS.right,
     nextDir: DIRS.right,
