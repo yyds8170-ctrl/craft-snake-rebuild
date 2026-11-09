@@ -1,0 +1,20 @@
+NOTICE
+======
+
+craft-snake-rebuild
+Copyright (c) 2026 洋洋 (GitHub: yyds8170-ctrl)
+Licensed under the PolyForm Noncommercial License 1.0.0
+(see the LICENSE file for the full terms)
+
+------------------------------------------------------------------
+Independent implementation
+------------------------------------------------------------------
+
+This repository is an independently implemented interactive demo (the Snake
+game). All game logic, styles, tests, and documentation were written from
+scratch; no third-party source code or binaries are included, embedded, or
+redistributed.
+
+All third-party names and marks belong to their respective owners and are used
+only for descriptive purposes. This project is not affiliated with, endorsed
+by, or sponsored by any third party.

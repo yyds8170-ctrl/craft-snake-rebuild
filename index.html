@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>贪吃蛇 · Snake</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="hud">
+      <h1>贪吃蛇</h1>
+      <div class="scores">
+        <div class="score-box"><span class="label">得分</span><span id="score">0</span></div>
+        <div class="score-box"><span class="label">最高</span><span id="best">0</span></div>
+      </div>
+    </header>
+
+    <div class="board-wrap">
+      <canvas id="board" width="400" height="400" aria-label="贪吃蛇游戏区域"></canvas>
+      <div id="overlay" class="overlay">
+        <div class="overlay-card">
+          <p id="overlay-title">准备开始</p>
+          <p id="overlay-text">按 空格 或点击按钮开始</p>
+          <button id="start-btn" type="button">开始游戏</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="hint">方向键 / WASD 控制移动 · 空格暂停或继续</p>
+
+    <!-- 移动端方向键 -->
+    <div class="dpad" aria-label="方向控制">
+      <button data-dir="up" class="d up">▲</button>
+      <button data-dir="left" class="d left">◀</button>
+      <button data-dir="down" class="d down">▼</button>
+      <button data-dir="right" class="d right">▶</button>
+    </div>
+  </main>
+  <script src="js/snake.js"></script>
+</body>
+</html>
