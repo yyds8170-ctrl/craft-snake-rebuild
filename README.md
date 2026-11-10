@@ -11,20 +11,38 @@
 >
 > 本仓库为独立实现，不包含任何第三方源码或二进制，与相关第三方**无隶属、无背书、无赞助关系**。详见 [NOTICE](NOTICE)。
 
+## 目录
+
+- [特性](#特性)
+- [如何运行](#如何运行)
+- [测试](#测试-1)
+- [目录结构](#目录结构-1)
+- [许可证](#许可证)
+
 ## 特性
 
 - 三档难度（简单 / 普通 / 困难），不同速度曲线
 - 方向键 / WASD 控制，禁止 180° 直接反向
 - 空格暂停 / 继续，开始与结束遮罩
-- 吃食物计分、随分数提升速度
+- 吃食物计分，速度随分数递增
+- **完美通关判定**：填满整个网格时显示通关界面
 - 程序化音效（Web Audio，零外部资源），可静音
 - 最高分通过 `localStorage` 持久化
-- 撞墙 / 撞自身判定，游戏结束可重开
+- 撞墙 / 撞自身判定，结束后可重开
 - 移动端虚拟方向键，响应式布局
+
+## 如何运行
+
+本项目使用 ES module，**请通过本地 HTTP 服务运行**（直接用 file:// 打开会因浏览器 CORS 策略阻止模块加载）：
+
+```bash
+python3 -m http.server 8000
+# 浏览器访问 http://localhost:8000
+```
 
 ## 测试
 
-- **单元测试（18 项）**：对纯逻辑引擎 `js/engine.js` 验证移动、吃食物、碰撞、方向、速度、难度、通关，对 `js/sound.js` 用 mock AudioContext 验证音效。
+- **单元测试（18 项）**：对纯逻辑引擎 `js/engine.js` 验证移动、吃食物、碰撞、方向、速度、难度、完美通关，对 `js/sound.js` 用 mock AudioContext 验证音效。
 
 ```bash
 node --test tests/engine.test.js tests/sound.test.js
@@ -36,15 +54,6 @@ node --test tests/engine.test.js tests/sound.test.js
 node e2e_test.mjs   # 需先启动带远程调试的浏览器（见 CI 配置）
 ```
 
-## 如何运行
-
-本项目使用 ES module，**请通过本地 HTTP 服务运行**（直接用 file:// 打开会因浏览器 CORS 策略阻止模块加载）：
-
-```bash
-python3 -m http.server 8000
-# 浏览器访问 http://localhost:8000
-```
-
 ## 目录结构
 
 ```text
@@ -53,7 +62,7 @@ rebuild-snake/
 ├── css/style.css
 ├── js/engine.js        # 纯逻辑引擎（可单元测试）
 ├── js/sound.js         # 程序化音效（Web Audio）
-├── js/snake.js         # UI/渲染/交互
+├── js/snake.js         # UI / 渲染 / 交互
 ├── tests/              # 单元测试 + 结构校验
 ├── e2e_test.mjs        # CDP 端到端测试
 ├── .github/workflows/ci.yml
