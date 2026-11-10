@@ -42,6 +42,10 @@ function tick() {
     if (sound) sound.play("over");
     return gameOver();
   }
+  if (event === "won") {
+    if (sound) sound.play("over");
+    return gameWin();
+  }
 
   scoreEl.textContent = state.score;
   if (event === "ate") {
@@ -107,6 +111,15 @@ function gameOver() {
   overlayTitle.textContent = "游戏结束";
   overlayText.textContent = `本局得分 ${state.score}，再来一局？`;
   startBtn.textContent = "重新开始";
+  overlay.classList.remove("hidden");
+}
+
+function gameWin() {
+  clearInterval(timer);
+  running = false;
+  overlayTitle.textContent = "完美通关";
+  overlayText.textContent = `你填满了整个棋盘（${state.score} 分），太厉害了！`;
+  startBtn.textContent = "再来一局";
   overlay.classList.remove("hidden");
 }
 

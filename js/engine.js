@@ -84,6 +84,10 @@ export function step(state, rng = Math.random) {
   if (state.food && head.x === state.food.x && head.y === state.food.y) {
     state.score += 1;
     state.food = placeFood(state.snake, state.cells, rng);
+    if (state.food === null) { // 网格填满：完美通关
+      state.status = "won";
+      return "won";
+    }
     state.status = "playing";
     return "ate";
   }

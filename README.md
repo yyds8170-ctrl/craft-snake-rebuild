@@ -3,9 +3,9 @@
 [![CI](https://github.com/yyds8170-ctrl/craft-snake-rebuild/actions/workflows/ci.yml/badge.svg)](https://github.com/yyds8170-ctrl/craft-snake-rebuild/actions/workflows/ci.yml)
 [![license](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
 [![type](https://img.shields.io/badge/type-interactive%20demo-green.svg)](#特性)
-[![test](https://img.shields.io/badge/unit%2017--e2e%209%20passing-brightgreen.svg)](#测试)
+[![test](https://img.shields.io/badge/unit%2018--e2e%209%20passing-brightgreen.svg)](#测试)
 
-一个从零独立实现、可直接在浏览器运行的贪吃蛇，用于验证 **Craft Anything 取证 + 豆包手工编码**闭环对带交互逻辑目标的处理能力。
+一个从零独立实现、可直接在浏览器运行的贪吃蛇，用于验证 **Craft Anything 取证 + 编码代理手工实现**闭环对带交互逻辑目标的处理能力。
 
 > **维护者 / Maintainer：洋洋（[yyds8170-ctrl](https://github.com/yyds8170-ctrl)）**
 >
@@ -24,7 +24,7 @@
 
 ## 测试
 
-- **单元测试（17 项）**：对纯逻辑引擎 `js/engine.js` 验证移动、吃食物、碰撞、方向、速度、难度，对 `js/sound.js` 用 mock AudioContext 验证音效。
+- **单元测试（18 项）**：对纯逻辑引擎 `js/engine.js` 验证移动、吃食物、碰撞、方向、速度、难度、通关，对 `js/sound.js` 用 mock AudioContext 验证音效。
 
 ```bash
 node --test tests/engine.test.js tests/sound.test.js

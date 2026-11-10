@@ -103,3 +103,18 @@ test("非法难度回退到 normal", () => {
   assert.equal(s.difficulty, "normal");
   assert.equal(s.speedConfig, DIFFICULTIES.normal);
 });
+
+test("填满网格时判定完美通关（2x2 棋盘）", () => {
+  // 2x2 共 4 格，蛇占 3 格，食物在最后一格
+  const s = {
+    cells: 2,
+    snake: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }],
+    dir: DIRS.down, nextDir: DIRS.down,
+    food: { x: 0, y: 1 },
+    score: 0, status: "playing",
+  };
+  const event = step(s);
+  assert.equal(event, "won");
+  assert.equal(s.status, "won");
+  assert.equal(s.food, null);
+});
