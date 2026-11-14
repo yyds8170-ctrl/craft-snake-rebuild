@@ -11,10 +11,12 @@ repository-code: "https://github.com/yyds8170-ctrl/craft-snake-rebuild"
 url: "https://github.com/yyds8170-ctrl/craft-snake-rebuild"
 abstract: "Independently implemented Snake game with a unit-testable engine, CDP end-to-end tests, and continuous integration."
 keywords:
+  - clean-room
   - snake
   - game
   - javascript
   - canvas
+  - web-audio
   - testing
 preferred-citation:
   type: software
